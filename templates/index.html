@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% block title %}首页{% endblock %}
+{% block beforehead %}
+{% endblock %}
+{% block content %}
+    <div class="layui-fluid layui-container">
+    <fieldset class="layui-elem-field layui-field-title">
+        <legend>最近的博客</legend>
+    </fieldset>
+    <div class="layui-row">
+        <div class="layui-col-sm9">
+            <div class="grid-demo grid-demo-bg1">
+                <ul class="layui-timeline">
+                    {% for blog in blogs %}
+                    <li class="layui-timeline-item">
+                        <i class="layui-icon layui-timeline-axis"></i>
+                        <div class="layui-timeline-content layui-text">
+                            <h3 class="layui-timeline-title">{{ blog.name }}</h3>
+                            <p>
+                                {{ blog.summary }}
+                            </p>
+                        </div>
+                    </li>
+                    {% endfor %}
+                    <li class="layui-timeline-item">
+                        <i class="layui-icon layui-timeline-axis"></i>
+                        <div class="layui-timeline-content layui-text">
+                            <div class="layui-timeline-title">更多</div>
+                        </div>
+                    </li>
+                </ul>
+        </div>
+        <div class="layui-btn-group layui-container">
+        {% if pagination.has_prev %}
+             <button class="layui-btn layui-btn-primary">
+                    <a href="{{ url_for('.index',page = pagination.page - 1) }}"><< 上一页</a>
+             </button>
+            {% endif %}
+
+        {% if pagination.has_next %}
+            <button class="layui-btn layui-btn-primary">
+                    <a href="{{ url_for('.index',page = pagination.page + 1) }}">下一页 >></a>
+            </button>
+        {% endif %}
+            </div>
+        </div>
+        <div class="layui-col-sm3">
+            <div class="grid-demo">
+                <ul>
+                    <iframe src="//www.seniverse.com/weather/weather.aspx?uid=UF094BD236&cid=CHSD000100&l=zh-CHS&p=SMART&a=0&u=C&s=3&m=2&x=1&d=2&fc=&bgc=&bc=&ti=0&in=0&li=" frameborder="0" scrolling="no" width="300" height="110" allowTransparency="true"></iframe>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
