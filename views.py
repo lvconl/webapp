@@ -93,10 +93,14 @@ def read_blog(id):
 @app.route('/login',methods = ["GET","POST"])
 def login():
     form = LoginForm()
-    if form.validate_on_submit():
-        email = form.name.data
-        password = form.password.data
-        remember = form.remember.data
+    if request.method == 'POST':
+        email = request.form.get('email')
+        print(email)
+        password = request.form.get('password')
+        print(password)
+        remember = request.form.get('remember')
+        print(remember)
+        print(type(remember))
         users = Users.query.filter_by(email = email).all()
         if len(users) == 0:
             error = '*用户不存在'
@@ -104,7 +108,7 @@ def login():
             user = users[0]
             if user.passwd == md5(password):
                 response = make_response('''<script>location.href='/';</script>''')
-                if remember is True:
+                if not remember is None:
                     outdate = datetime.datetime.today() + datetime.timedelta(days=30)
                     response.set_cookie(COOKIE_NAME,user.id,expires = outdate)
                     return response
@@ -116,12 +120,10 @@ def login():
         return render_template(
             'login.html',
             error = error,
-            form = form
         )
     else:
         return render_template(
-        "login.html",
-        form = form
+        'login.html'
     )
 
 @app.route('/signout')
@@ -137,59 +139,35 @@ def signout():
 
 @app.route('/register',methods = ['GET','POST'])
 def register():
-    form = RegisterForm()
     if request.method == 'GET':
         return render_template(
-            'register.html',
-            form = form
+            'register.html'
         )
-    name = form.name.data
-    email = form.email.data
-    password = form.password.data
-    password1 = form.password1.data
-    if name == '':
-        error = '*用户名不能为空'
-        return render_template(
-            'register.html',
-            form = form,
-            error = error
-        )
-    if not re.match(r'^[0-9a-zA-Z_]{0,19}@[0-9a-zA-Z]{1,13}\.[com,cn,net]{1,3}$',email):
-        error = '*暂不支持此格式的邮箱'
-        return render_template(
-            'register.html',
-            form=form,
-            error=error
-        )
-    if len(password) < 6:
-        error = '*密码长度过短'
-        return render_template(
-            'register.html',
-            form=form,
-            error=error
-        )
-    if password != password1:
-        error = '*两次输入密码不一致'
-        return render_template(
-            'register.html',
-            form=form,
-            error=error
-        )
-    users = Users.query.filter_by(email = email).all()
-    if len(users) > 0:
-        error = '*账号已存在'
-        return render_template(
-            'register.html',
-            form=form,
-            error=error
-        )
-    passwd = md5(password)
-    user = Users(id = str(uuid1()),email = email,passwd = passwd,name = name)
-    db.session.add(user)
-    db.session.commit()
-    response = make_response('''<script>location.href='/';</script>''')
-    response.set_cookie(COOKIE_NAME,user.id)
-    return response
+    if request.method == 'POST':
+        name = request.form.get('username')
+        print(name)
+        email = request.form.get('email')
+        print(email)
+        password = request.form.get('password')
+        print(password)
+        users = Users.query.filter_by(email = email).all()
+        if len(users) > 0:
+            error = '*账号已存在'
+            return render_template(
+                'register.html',
+                error = error
+            )
+        passwd = md5(password)
+        user = Users(id = str(uuid1()),email = email,passwd = passwd,name = name)
+        try:
+            db.session.add(user)
+        except Exception as e:
+            print(e)
+        finally:
+            db.session.commit()
+        response = make_response('''<script>location.href='/';</script>''')
+        response.set_cookie(COOKIE_NAME,user.id)
+        return response
 
 @app.route('/blogs/create',methods = ['GET','POST'])
 def blog_create():

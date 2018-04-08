@@ -39,16 +39,18 @@
 <div class="layui-nav">
 <ul class="layui-nav">
     <li class="layui-nav-item nav-base" style="margin-left: 20%;">
-        <a href="/" style="font-size: 18px;"><i class="layui-icon" style="font-size: 18px;">&#xe68e;</i>首页</a>
+        <a href="/" style="font-size: 15px;"><i class="layui-icon" style="font-size: 20px;">&#xe68e;&nbsp;&nbsp;</i>首页</a>
     </li>
     <li class="layui-nav-item nav-base">
-        <a href="/search" style="font-size: 18px;"><i class="layui-icon" style="font-size: 18px;">&#xe615;</i>发现</a>
+        <a href="/search" style="font-size: 15px;"><i class="layui-icon" style="font-size: 20px;">&#xe615;&nbsp;&nbsp;</i>发现</a>
     </li>
     <li class="layui-nav-item nav-base">
-        <a href="https://github.com/lvconl" style="font-size: 18px;"><i class="layui-icon" style="font-size: 18px;">&#xe64e;</i>源码</a>
+        <a href="https://github.com/lvconl" style="font-size: 15px;"><i class="layui-icon" style="font-size: 20px;">&#xe64e;&nbsp;&nbsp;</i>源码</a>
     </li>
+    {% if user %}
     <li class="layui-nav-item nav-base" style="width:10%; float:right;">
-        <a href="" style="font-size: 18px;">{% if user.image %}
+        <a href="" style="font-size: 18px;">
+            {% if user.image %}
                 <img src="data:;base64,{{ base64.b64encode(user.image).decode('utf-8') }}" width="32" height="32" style="border-radius: 50%;">
             {% else %}
                 <img src="../static/img/register-logo.png" width="32" height="32" style="border-radius: 50%;">
@@ -65,13 +67,18 @@
                 <dd><a href="/signout" style="font-size: 18px;">退出登录</a></dd>
         </dl>
     </li>
+    {% else %}
+        <li class="layui-nav-item nav-base" style="float: right;">
+            <a href="/login" style="font-size: 18px;">登录</a>
+        </li>
+    {% endif %}
 </ul>
 </div>
 </div>
  {% block content %}
  {% endblock %}
-<hr>
-<div class="layui-footer footer layui-container">
+<div class="layui-footer footer layui-container" style="margin-top: 120px;">
+    <hr>
         <div class="layui-main">
           <p>&copy; 2018 <a href="mailto:835132735@qq.com">lvconl</a> MIT license</p>
           <p>
