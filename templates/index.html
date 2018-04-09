@@ -10,25 +10,17 @@
     <div class="layui-row">
         <div class="layui-col-sm9">
             <div class="grid-demo grid-demo-bg1">
-                <ul class="layui-timeline">
-                    {% for blog in blogs %}
-                    <li class="layui-timeline-item">
-                        <i class="layui-icon layui-timeline-axis"></i>
-                        <div class="layui-timeline-content layui-text">
-                            <h3 class="layui-timeline-title">{{ blog.name }}</h3>
-                            <p>
-                                {{ blog.summary }}
-                            </p>
-                        </div>
-                    </li>
-                    {% endfor %}
-                    <li class="layui-timeline-item">
-                        <i class="layui-icon layui-timeline-axis"></i>
-                        <div class="layui-timeline-content layui-text">
-                            <div class="layui-timeline-title">更多</div>
-                        </div>
-                    </li>
-                </ul>
+                {% for blog in blogs %}
+                    <blockquote class="site-text layui-elem-quote">
+                    <h1 class="layui-timeline-title">{{ blog.name }}</h1>
+                    <p style="font-size: 17px;">
+                        {{ blog.summary }}
+                    </p>
+                    <p>
+                        {{ blog.created_at }}
+                    </p>
+                </blockquote>
+                {% endfor %}
         </div>
         <div class="layui-btn-group layui-container">
         {% if pagination.has_prev %}

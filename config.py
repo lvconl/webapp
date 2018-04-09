@@ -8,7 +8,7 @@
 class DevConfig(object):
     SQLALCHEMY_TRACK_MODIFICATIONS = True
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:123456@127.0.0.1:3306/blog'
+    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:123456@127.0.0.1:3306/webapp'
     SECRET_KEY = 'lv1997'
     CSRF_ENABLED = True
 
@@ -19,3 +19,4 @@ class ProConfig(Config):
     pass
 
 POSTS_PER_PAGE = 3
+COOKIE_NAME = 'lvconl'

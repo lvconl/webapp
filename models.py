@@ -22,6 +22,9 @@ class Users(db.Model):
     name = db.Column(db.String(255))
     birth = db.Column(db.Date())
     image = db.Column(db.LargeBinary(length = 2048))
+    topic_count = db.Column(db.Integer())
+    answer_count = db.Column(db.Integer())
+    favorite_count = db.Column(db.Integer())
     created_at = db.Column(db.DateTime())
 
     def __init__(self,id,email,passwd,name):
@@ -29,19 +32,45 @@ class Users(db.Model):
         self.email = email
         self.passwd = passwd
         self.name = name
+        self.topic_count = 0
+        self.answer_count = 0
+        self.favorite_count = 0
         self.birth = datetime.date.today()
         self.created_at = datetime.datetime.now()
 
     def __repr__(self):
-        return "[User] id:`{}`,admin:`{}`,email:`{}`,passwd:`{}`,name:`{}`,birth:`{}`,image:`{}`,created_at:`{}`".format(
-            self.id,self.admin,self.email,self.passwd,self.name,self.birth,self.image,self.created_at
+        return "[User] id:`{}`,admin:`{}`,email:`{}`,passwd:`{}`,name:`{}`,birth:`{}`,image:`{}`,topic_count:`{}`,answer_count:`{}`,favorite_count:`{}`,created_at:`{}`".format(
+            self.id,self.admin,self.email,self.passwd,self.name,self.birth,self.image,self.topic_count,self.answer_count,self.favorite_count,self.created_at
         )
 
-class Blogs(db.Model):
+class Topic(db.Model):
     id = db.Column(db.String(255),primary_key = True)
     user_id = db.Column(db.String(255))
-    user_name = db.Column(db.String(255))
-    user_image = db.Column(db.LargeBinary(length = 2048))
+    name = db.Column(db.String(255))
+    summary = db.Column(db.Text())
+    content = db.Column(db.Text())
+    favorite_count = db.Column(db.Integer())
+    answer_count = db.Column(db.Integer())
+    created_at = db.Column(db.DateTime())
+
+    def __init__(self,id,user_id,name,summary,content):
+        self.id = id
+        self.user_id = user_id
+        self.name = name
+        self.summary = summary
+        self.content = content
+        self.favorite_count = 0
+        self.answer_count = 0
+        self.created_at = datetime.datetime.now()
+
+    def __repr__(self):
+        return "[Topic] id:`{}`,user_id:`{}`,name:`{}`,summary:`{}`,content:`{}`,favorite_count:`{}`,answer_count:`{}`,created_at:`{}`".format(
+            self.id,self.user_id,self.name,self.summary,self.content,self.favorite_count,self.answer_count,self.created_at
+        )
+
+class Anwser(db.Model):
+    id = db.Column(db.String(255),primary_key = True)
+    user_id = db.Column(db.String(255))
     name = db.Column(db.String(255))
     summary = db.Column(db.Text())
     content = db.Column(db.Text())
@@ -65,11 +94,8 @@ class Blogs(db.Model):
 
 class Comments(db.Model):
     id = db.Column(db.String(255),primary_key = True)
-    blog_id = db.Column(db.String(255))
-    blog_name = db.Column(db.String(255))
+    answer_id = db.Column(db.String(255))
     user_id = db.Column(db.String(255))
-    user_name = db.Column(db.String(255))
-    user_image = db.Column(db.LargeBinary(length = 2048))
     content = db.Column(db.Text())
     likeCount = db.Column(db.Integer())
     created_at = db.Column(db.DateTime())
@@ -105,4 +131,21 @@ class Likes(db.Model):
     def __repr__(self):
         return "[Like] id:`{}`,comment_id:`{}`,user_id:`{}`,created_at:`{}`".format(
             self.id,self.comment_id,self.user_id,self.created_at
+        )
+
+class Favorite(db.Model):
+    id = db.Column(db.String(255),primary_key = True)
+    topic_id = db.Column(db.String(255))
+    user_id = db.Column(db.String(255))
+    created_at = db.Column(db.String(255))
+
+    def __init__(self,id,topic_id,user_id):
+        self.id = id
+        self.topic_id = topic_id
+        self.user_id = user_id
+        self.created_at = datetime.datetime.now()
+
+    def __repr__(self):
+        return "[Favorite] id:`{}`,topic_id:`{}`,user_id:`{}`,created_at:`{}`".format(
+            self.id,self.topic_id,self.user_id,self.created_at
         )

@@ -8,7 +8,7 @@
 from sqlalchemy import and_
 from flask import request,session
 from flask import Blueprint
-from models import db,Users,Blogs,Comments,Likes
+from models import db,Users,Topic,Comments,Likes
 from uuid import uuid1
 
 ajax = Blueprint('ajax',__name__)
