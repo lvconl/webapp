@@ -4,4 +4,66 @@
 {% endblock %}
 {% block content %}
 
+<div class="site-text layui-container" style="margin-top: 50px;">
+    <form class="layui-form layui-form-pane" action="/topic/created" method="POST">
+        <div class="layui-form-item">
+            <label class="layui-form-label">标题</label>
+            <div class="layui-input-block">
+                <input type="text" name="title" required  lay-verify="required" placeholder="给你的idea起个名字" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">摘要</label>
+            <div class="layui-input-block">
+                <input type="text" name="summary" required lay-verify="required" placeholder="大致描述一下你的idea" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <div class="layui-input-block">
+                <div id="div1">
+                    <p>欢迎使用 wangEditor 编辑器</p>
+                </div>
+                <input type="text" id="text1" name="content" style="width:100%; height:200px;display: none;">
+                <script type="text/javascript" src="../../static/js/wangEditor.js"></script>
+                <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+                <script type="text/javascript">
+                    var E = window.wangEditor
+                    var editor = new E('#div1')
+                    // 自定义菜单配置
+                    editor.customConfig.menus = [
+                        'head',  // 标题
+                        'bold',  // 粗体
+                        'fontSize',  // 字号
+                        'fontName',  // 字体
+                        'italic',  // 斜体
+                        'underline',  // 下划线
+                        'strikeThrough',  // 删除线
+                        'foreColor',  // 文字颜色
+                        'backColor',  // 背景颜色
+                        'link',  // 插入链接
+                        'list',  // 列表
+                        'justify',  // 对齐方式
+                        'quote' // 引用
+                    ]
+                    editor.customConfig.onchange = function (html) {
+                        // 监控变化，同步更新到 textarea
+                        $text1.val(html)
+                    }
+                    editor.create()
+                    $text1.val(editor.txt.html());
+                    document.getElementById('btn-submit').addEventListener('click',function(){
+                        var content = editor.txt.html();
+                        $text1.val(content);
+                        alert(content);
+                    })
+                </script>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <button class="layui-btn" id="btn-submit" lay-submit lay-filter="formDemoPane">发布</button>
+        </div>
+    </form>
+</div>
+
+
 {% endblock %}

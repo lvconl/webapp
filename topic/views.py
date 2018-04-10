@@ -8,6 +8,7 @@ from flask import Blueprint,redirect,session,request,render_template
 from models import Topic,Users
 from models import db
 from config import COOKIE_NAME
+from uuid import uuid1
 
 import hashlib
 
@@ -37,7 +38,24 @@ def topic_creata():
     user = checkUser()
     if user == '':
         return redirect('/')
-    return render_template(
-        'topicCreate.html',
-        user = user
-    )
+    if request.method == 'GET':
+        return render_template(
+            'topicCreate.html',
+            user = user
+        )
+    if request.method == 'POST':
+        title = request.form.get('title')
+        print(type(title))
+        summary = request.form.get('summary')
+        print(type(summary))
+        content = request.args.get('content')
+        print(len(content))
+        print(type(content))
+        topic = Topic(id = str(uuid1()),user_id = user.id,name = title,summary = summary,content = content)
+        try:
+            db.session.add(topic)
+        except Exception as e:
+            print(e)
+        finally:
+            db.session.commit()
+        return redirect('/')
