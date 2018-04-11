@@ -19,44 +19,28 @@
             </div>
         </div>
         <div class="layui-form-item layui-form-text">
-            <div class="layui-input-block">
-                <div id="div1">
-                    <p>欢迎使用 wangEditor 编辑器</p>
+
+            <script src="http://cdn.bootcss.com/wangeditor/2.1.20/js/lib/jquery-2.2.1.js"></script>
+            <div class="layui-input-block" style="">
+                <div id="txtdiv" style="border:1px solid gray;min-height:240px">
+                    <p>在这里发表你的想法</p>
                 </div>
-                <input type="text" id="text1" name="content" style="width:100%; height:200px;display: none;">
-                <script type="text/javascript" src="../../static/js/wangEditor.js"></script>
-                <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
-                <script type="text/javascript">
-                    var E = window.wangEditor
-                    var editor = new E('#div1')
-                    // 自定义菜单配置
-                    editor.customConfig.menus = [
-                        'head',  // 标题
-                        'bold',  // 粗体
-                        'fontSize',  // 字号
-                        'fontName',  // 字体
-                        'italic',  // 斜体
-                        'underline',  // 下划线
-                        'strikeThrough',  // 删除线
-                        'foreColor',  // 文字颜色
-                        'backColor',  // 背景颜色
-                        'link',  // 插入链接
-                        'list',  // 列表
-                        'justify',  // 对齐方式
-                        'quote' // 引用
-                    ]
-                    editor.customConfig.onchange = function (html) {
-                        // 监控变化，同步更新到 textarea
-                        $text1.val(html)
-                    }
-                    editor.create()
-                    $text1.val(editor.txt.html());
-                    document.getElementById('btn-submit').addEventListener('click',function(){
-                        var content = editor.txt.html();
-                        $text1.val(content);
-                        alert(content);
-                    })
-                </script>
+                <textarea type="text" id="show_box" name="content" style="width:100%; height:200px;display: none;"></textarea>
+                <script>
+                $(function(){
+                        //初始化编辑器
+                         editor = new wangEditor("txtdiv");
+
+                         editor.create();
+
+                         //内容修改事件，此处做的是实时展示实际效果
+                         editor.onchange = function(){
+                                 //获取editor的html值
+                                 var html = editor.$txt.html();
+                                 $("#show_box").val(html)
+                             }
+                   })
+         </script>
             </div>
         </div>
         <div class="layui-form-item">
@@ -64,6 +48,7 @@
         </div>
     </form>
 </div>
-
+<script src="http://cdn.bootcss.com/wangeditor/2.1.20/js/wangEditor.js"></script>
+       <link href="http://cdn.bootcss.com/wangeditor/2.1.20/css/wangEditor.css" rel="stylesheet">
 
 {% endblock %}
