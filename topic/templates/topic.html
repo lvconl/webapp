@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% block title %}{{ topic.name }}{% endblock %}
+{% block beforehead %}
+{% endblock %}
+{% block content %}
+     <fieldset class="layui-elem-field layui-field-title layui-main" style="margin-top: 20px;">
+        <legend>{{ topic.name }}</legend>
+    </fieldset>
+    <div class="layui-row layui-container">
+        <div class="layui-col-xs12 layui-col-md8">
+            <div class="grid-demo grid-demo-bg1 layui-container">
+                {{ topic.content|safe }}
+            </div>
+        </div>
+        <div class="layui-col-xs6 layui-col-md4">
+            <div class="grid-demo">
+                {% if writer.user_image %}
+                    <img class="layui-main" src="data:;base64,{{ base64.b64encode(writer.user_image).decode('utf-8') }}" width="70" height="70" style="border-radius: 50%;">
+                {% else %}
+                    <i class="layui-icon" style="font-size: 80px;">&#xe612;</i>
+                {% endif %}
+                <h2 class="layui-container">{{ writer.name }}</h2>
+                <h3>
+                <span>发布的话题：{{ writer.topic_count }}</span>
+                <span>回答的问题：{{ writer.answer_count }}</span>
+                </h3>
+            </div>
+        </div>
+
+        {% if anwsers %}
+        <fieldset class="layui-elem-field layui-field-title site-title">
+            <legend><a name="nonmodules">最近答案</a></legend>
+        </fieldset>
+        <div class="site-text">
+        {% for ans in anwsers %}
+            <blockquote class="layui-elem-quote layui-quote-nm">
+                {% if ans.user_image %}
+                    <img src="data:;base64,{{ base64.b64encode(ans.user_image).decode('utf-8') }}" width="32" height="32" style="border-radius: 50%;">
+                {% else %}
+                    <i class="layui-icon" style="font-size: 50px;">&#xe612;</i>
+                {% endif %}
+                <span style="font-size: 20px;">{{ ans.name }}</span>
+                <p><span class="layui-container">{{ ans.content|safe }}</span>
+            </blockquote>
+        {% endfor %}
+        </div>
+    {% else %}
+    <fieldset class="layui-elem-field layui-field-title site-title">
+            <legend><a name="nonmodules">暂无回答</a></legend>
+        </fieldset>
+    {% endif %}
+    <form class="layui-form layui-form-pane" action="/topic/{{ topic.id }}" method="POST">
+        <div class="layui-form-item layui-form-text">
+
+            <script src="http://cdn.bootcss.com/wangeditor/2.1.20/js/lib/jquery-2.2.1.js"></script>
+            <div class="layui-input-block" style="">
+                <div id="txtdiv" style="border:1px solid gray;min-height:240px">
+                    <p>添加回答</p>
+                </div>
+                <textarea type="text" id="show_box" name="content" style="width:100%; height:200px;display: none;"></textarea>
+                <script>
+                $(function(){
+                        //初始化编辑器
+                         editor = new wangEditor("txtdiv");
+
+                         editor.create();
+
+                         //内容修改事件，此处做的是实时展示实际效果
+                         editor.onchange = function(){
+                                 //获取editor的html值
+                                 var html = editor.$txt.html();
+                                 $("#show_box").val(html)
+                             }
+                   })
+         </script>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <button class="layui-btn" id="btn-submit" lay-submit lay-filter="formDemoPane">回答</button>
+        </div>
+    </form>
+    </div>
+
+<script src="http://cdn.bootcss.com/wangeditor/2.1.20/js/wangEditor.js"></script>
+       <link href="http://cdn.bootcss.com/wangeditor/2.1.20/css/wangEditor.css" rel="stylesheet">
+{% endblock %}

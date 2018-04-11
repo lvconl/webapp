@@ -10,14 +10,14 @@
     <div class="layui-row">
         <div class="layui-col-sm9">
             <div class="grid-demo grid-demo-bg1">
-                {% for blog in blogs %}
+                {% for topic in topics %}
                     <blockquote class="site-text layui-elem-quote">
-                    <h1 class="layui-timeline-title">{{ blog.name }}</h1>
+                        <h1 class="layui-timeline-title"><a href="/topic/{{ topic.id }}">{{ topic.name }}</a></h1>
                     <p style="font-size: 17px;">
-                        {{ blog.summary }}
+                        <a href="/topic/{{ topic.id }}">{{ topic.summary }}</a>
                     </p>
                     <p>
-                        {{ blog.created_at }}
+                        {{ topic.created_at }}
                     </p>
                 </blockquote>
                 {% endfor %}

@@ -71,25 +71,26 @@ class Topic(db.Model):
 class Anwser(db.Model):
     id = db.Column(db.String(255),primary_key = True)
     user_id = db.Column(db.String(255))
+    user_image = db.Column(db.BLOB())
+    topic_id = db.Column(db.String(255))
     name = db.Column(db.String(255))
     summary = db.Column(db.Text())
     content = db.Column(db.Text())
     tag = db.Column(db.String(100))
     created_at = db.Column(db.DateTime())
 
-    def __init__(self,id,user_id,user_name,name,summary,content,tag):
+    def __init__(self,id,user_id,name,user_image,topic_id,content):
         self.id = id
         self.user_id = user_id
-        self.user_name = user_name
         self.name = name
-        self.summary = summary
+        self.user_image = user_image
+        self.topic_id = topic_id
         self.content = content
-        self.tag = tag
         self.created_at = datetime.datetime.now()
 
     def __repr__(self):
-        return "[Blog] id:`{}`,user_id:`{}`,user_name:`{}`,user_image:`{}`,name:`{}`,summary:`{}`,content:`{}`,tag:`{}`,created_at:`{}`".format(
-            self.id,self.user_id,self.user_name,self.user_image,self.name,self.summary,self.content,self.tag,self.created_at
+        return "[Anwser] id:`{}`,user_id:`{}`,name:`{}`,user_image:`{}`,content:`{}`,created_at:`{}`".format(
+            self.id,self.user_id,self.name,self.user_image,self.content,self.created_at
         )
 
 class Comments(db.Model):

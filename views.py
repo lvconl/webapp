@@ -44,10 +44,10 @@ def index(page = 1):
     user = checkUser()
     page = request.args.get('page',1,type = int)
     pagination = Topic.query.order_by(Topic.created_at.desc()).paginate(page,per_page = POSTS_PER_PAGE,error_out = False)
-    blogs = pagination.items
+    topics = pagination.items
     return render_template(
         "index.html",
-        blogs = blogs,
+        topics = topics,
         user = user,
         base64=base64,
         pagination = pagination
