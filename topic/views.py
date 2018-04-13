@@ -5,7 +5,7 @@
 # @Date  : 18-4-9
 #@Software : PyCharm
 from flask import Blueprint,redirect,session,request,render_template
-from models import Topic,Users,Anwser,Likes
+from models import Topic,Users,Anwser,Likes,Comments
 from sqlalchemy import and_
 from models import db
 from config import COOKIE_NAME
@@ -67,17 +67,20 @@ def topic_detail(id):
     else:
         topic = topics[0]
     if request.method == 'GET':
-        anwsersResult = Anwser.query.filter_by(topic_id=topic.id).order_by(Anwser.created_at.desc()).all()
-        print(anwsersResult)
-        answers = []
-        for a in anwsersResult:
-            like = Likes.query.filter(and_(Likes.user_id.like(user.id), Likes.comment_id.like(a.id))).all()
-            if len(like):
-                a.canLike = True
-            else:
-                a.canLike = False
-            answers.append(a)
-        print(answers)
+        page = request.args.get('page_ans', 1, type=int)
+        pagination_ans = Anwser.query.filter_by(topic_id = topic.id).paginate(page, per_page=1,error_out=False)
+        answer = pagination_ans.items[0]
+        comments = Comments.query.filter_by(answer_id = answer.id).all()
+        comment = []
+        for c in comments:
+            user = Users.query.filter_by(id = c.user_id).all()[0]
+            c.user_name = user.name
+            comment.append(c)
+        like = Likes.query.filter(and_(Likes.user_id.like(user.id), Likes.comment_id.like(answer.id))).all()
+        if len(like):
+            answer.canLike = True
+        else:
+            answer.canLike = False
         writer = Users.query.filter_by(id = topic.user_id).all()[0]
         return render_template(
             'topic.html',
@@ -85,7 +88,9 @@ def topic_detail(id):
             user = user,
             base64 = base64,
             writer = writer,
-            anwsers = answers
+            anwsers = answer,
+            pagination_ans=pagination_ans,
+            comment = comment
         )
     if request.method == 'POST':
         content = request.form.get('content')

@@ -101,13 +101,10 @@ class Comments(db.Model):
     likeCount = db.Column(db.Integer())
     created_at = db.Column(db.DateTime())
 
-    def __init__(self,id,blog_id,blog_name,user_id,user_name,user_image,content):
+    def __init__(self,id,user_id,answer_id,content):
         self.id = id
-        self.blog_id = blog_id
-        self.blog_name = blog_name
         self.user_id = user_id
-        self.user_name = user_name
-        self.user_image = user_image
+        self.answer_id = answer_id
         self.content = content
         self.likeCount = 0
         self.created_at = datetime.datetime.now()

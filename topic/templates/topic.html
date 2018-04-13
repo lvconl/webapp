@@ -3,13 +3,14 @@
 {% block beforehead %}
 {% endblock %}
 {% block content %}
-     <fieldset class="layui-elem-field layui-field-title layui-main" style="margin-top: 20px;">
+    <div class="layui-row layui-container">
+    <fieldset class="layui-elem-field layui-field-title layui-main" style="margin-top: 20px;">
         <legend>{{ topic.name }}</legend>
     </fieldset>
-    <div class="layui-row layui-container">
         <div class="layui-col-xs12 layui-col-md8">
             <div class="grid-demo grid-demo-bg1 layui-container">
-                {{ topic.content|safe }}
+                <h2>{{ topic.content|safe }}
+                </h2>
             </div>
         </div>
         <div class="layui-col-xs6 layui-col-md4">
@@ -32,24 +33,58 @@
             <legend><a name="nonmodules">最近答案</a></legend>
         </fieldset>
         <div class="site-text">
-        {% for ans in anwsers %}
-            <blockquote class="layui-elem-quote layui-quote-nm">
-                {% if ans.user_image %}
-                    <img src="data:;base64,{{ base64.b64encode(ans.user_image).decode('utf-8') }}" width="32" height="32" style="border-radius: 50%;">
-                {% else %}
-                    <i class="layui-icon" style="font-size: 50px;">&#xe612;</i>
-                {% endif %}
-                <span style="font-size: 20px;">{{ ans.name }}</span>
-                <p><span class="layui-container">{{ ans.content|safe }}</span>
+        <blockquote class="layui-elem-quote layui-quote-nm">
+             {% if anwsers.user_image %}
+                 <img src="data:;base64,{{ base64.b64encode(ans.user_image).decode('utf-8') }}" width="32" height="32" style="border-radius: 50%;">
+             {% else %}
+                  <i class="layui-icon" style="font-size: 50px;">&#xe612;</i>
+             {% endif %}
+                <span style="font-size: 20px;">{{ anwsers.name }}{% if anwsers.user_id == writer.id %}(提问者){% endif %}</span>
+                <p><span class="layui-container">{{ anwsers.content|safe }}</span>
+            <p><span>发表于:{{ anwsers.created_at }}</span>
             </blockquote>
-        {% endfor %}
         </div>
+            <div class="layui-btn-group layui-container layui-main">
+        {% if pagination_ans.has_prev %}
+             <button class="layui-btn layui-btn-primary">
+                    <a href="{{ url_for('.topic_detail',id = topic.id,page_ans = pagination_ans.page - 1) }}"><< 上一回答</a>
+             </button>
+            {% endif %}
+        {% if pagination_ans.has_next %}
+            <button class="layui-btn layui-btn-primary">
+                    <a href="{{ url_for('.topic_detail',id = topic.id,page_ans = pagination_ans.page + 1) }}">下一回答 >></a>
+            </button>
+        {% endif %}
+            </div>
+     <div class="layui-collapse" style="margin-top: 10px;">
+        <div class="layui-colla-item">
+            {% if comment %}
+            <h2 class="layui-colla-title">该回答的评论</h2>
+                {% for c in comment %}
+                    <div class="layui-colla-content layui-show">
+                        <span>{{ c.user_name }}{% if anwsers.user_id == c.user_id %}(回答者){% endif %}:</span>{{ c.content|safe }}
+                        <p><span style="">发表于:{{ c.created_at }}</span>
+                    </div>
+                {% endfor %}
+                {% else %}
+                <h2 class="layui-colla-title">该回答还没有评论</h2>
+                {% endif %}
+        <div class="layui-colla-content layui-show">
+            <form class="layui-form" action="/comment/create" method="POST">
+             <input type="text" name="comment"  placeholder="快来评论两句..." class="layui-input" autocomplete="off">
+             <input name="answer_id" value="{{ anwsers.id }}" style="display: none;" autocomplete="off">
+             <input name="topic_id" value="{{ topic.id }}" style="display: none;" autocomplete="off">
+             <button class="layui-btn" lay-submit lay-filter="formDemo" style="margin-top: 5px;">评论</button>
+            </form>
+        </div>
+        </div>
+    </div>
     {% else %}
     <fieldset class="layui-elem-field layui-field-title site-title">
             <legend><a name="nonmodules">暂无回答</a></legend>
         </fieldset>
     {% endif %}
-    <form class="layui-form layui-form-pane" action="/topic/{{ topic.id }}" method="POST">
+    <form class="layui-form layui-form-pane" style="margin-top: 15px;" action="/topic/{{ topic.id }}" method="POST">
         <div class="layui-form-item layui-form-text">
 
             <script src="http://cdn.bootcss.com/wangeditor/2.1.20/js/lib/jquery-2.2.1.js"></script>
@@ -80,7 +115,6 @@
         </div>
     </form>
     </div>
-
 <script src="http://cdn.bootcss.com/wangeditor/2.1.20/js/wangEditor.js"></script>
        <link href="http://cdn.bootcss.com/wangeditor/2.1.20/css/wangEditor.css" rel="stylesheet">
 {% endblock %}
