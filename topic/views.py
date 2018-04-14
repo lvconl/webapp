@@ -5,7 +5,7 @@
 # @Date  : 18-4-9
 #@Software : PyCharm
 from flask import Blueprint,redirect,session,request,render_template
-from models import Topic,Users,Anwser,Likes,Comments
+from models import Topic,Users,Answer,Likes,Comments
 from sqlalchemy import and_
 from models import db
 from config import COOKIE_NAME
@@ -50,6 +50,8 @@ def topic_create():
         summary = request.form.get('summary')
         content = request.form.get('content')
         topic = Topic(id = str(uuid1()),user_id = user.id,name = title,summary = summary,content = content)
+        topic_count = user.topic_count + 1
+        Users.query.filter_by(id = user.id).update({'topic_count':topic_count})
         try:
             db.session.add(topic)
         except Exception as e:
@@ -66,36 +68,52 @@ def topic_detail(id):
         topic = ''
     else:
         topic = topics[0]
+    print(topic)
     if request.method == 'GET':
         page = request.args.get('page_ans', 1, type=int)
-        pagination_ans = Anwser.query.filter_by(topic_id = topic.id).paginate(page, per_page=1,error_out=False)
-        answer = pagination_ans.items[0]
-        comments = Comments.query.filter_by(answer_id = answer.id).all()
-        comment = []
-        for c in comments:
-            user = Users.query.filter_by(id = c.user_id).all()[0]
-            c.user_name = user.name
-            comment.append(c)
-        like = Likes.query.filter(and_(Likes.user_id.like(user.id), Likes.comment_id.like(answer.id))).all()
-        if len(like):
-            answer.canLike = True
+        print(page)
+        pagination_ans = Answer.query.filter_by(topic_id=topic.id).paginate(page, per_page=1, error_out=False)
+        print(pagination_ans.items)
+        writer = Users.query.filter_by(id=topic.user_id).all()[0]
+        if len(pagination_ans.items) == 0:
+            return render_template(
+                'topic.html',
+                topic=topic,
+                user=user,
+                base64=base64,
+                writer=writer,
+            )
         else:
-            answer.canLike = False
-        writer = Users.query.filter_by(id = topic.user_id).all()[0]
-        return render_template(
-            'topic.html',
-            topic = topic,
-            user = user,
-            base64 = base64,
-            writer = writer,
-            anwsers = answer,
-            pagination_ans=pagination_ans,
-            comment = comment
-        )
+            answer = pagination_ans.items[0]
+            comments = Comments.query.filter_by(answer_id=answer.id).all()
+            comment = []
+            for c in comments:
+                user = Users.query.filter_by(id=c.user_id).all()[0]
+                c.user_name = user.name
+                comment.append(c)
+            like = Likes.query.filter(and_(Likes.user_id.like(user.id), Likes.comment_id.like(answer.id))).all()
+            if len(like):
+                answer.canLike = True
+            else:
+                answer.canLike = False
+            u = Users.query.filter_by(id = answer.user_id).all()[0]
+            answer.user_name = u.name
+            answer.user_image = u.image
+            return render_template(
+                'topic.html',
+                topic = topic,
+                user = user,
+                base64 = base64,
+                writer = writer,
+                anwsers = answer,
+                pagination_ans=pagination_ans,
+                comment = comment
+            )
     if request.method == 'POST':
         content = request.form.get('content')
-        print(content)
-        ans = Anwser(id = str(uuid1()),user_id = user.id,topic_id = id,name = user.name,user_image = user.image,content = content)
+        answer_count = user.answer_count + 1
+        Users.query.filter_by(id = user.id).update({'answer_count':answer_count})
+        ans = Answer(id = str(uuid1()),user_id = user.id,topic_id = id,content = content)
         db.session.add(ans)
         db.session.commit()
         return redirect('/topic/' + topic.id)

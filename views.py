@@ -8,7 +8,7 @@ from flask import render_template,make_response,request,redirect,session
 
 from sqlalchemy import and_
 from main import app
-from models import db,Users,Topic,Anwser,Comments,Likes
+from models import db,Users,Topic,Answer,Comments,Likes
 from forms import BlogTextForm,UserInfoForm,CommentForm,UpdatePasswdForm,SearchForm
 from uuid import uuid1
 from config import POSTS_PER_PAGE

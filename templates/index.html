@@ -28,7 +28,6 @@
                     <a href="{{ url_for('.index',page = pagination.page - 1) }}"><< 上一页</a>
              </button>
             {% endif %}
-
         {% if pagination.has_next %}
             <button class="layui-btn layui-btn-primary">
                     <a href="{{ url_for('.index',page = pagination.page + 1) }}">下一页 >></a>

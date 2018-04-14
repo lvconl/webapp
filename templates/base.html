@@ -57,12 +57,10 @@
             {% endif %}{{ user.name }}</a>
         <dl class="layui-nav-child">
             {% if user.admin == 1 %}
-                <dd><a href="/blogs" style="font-size: 18px;">日志管理</a></dd>
-                <dd><a href="/users" style="font-size: 18px;">用户管理</a></dd>
+                <dd><a href="/admin" style="font-size: 18px;">后台管理</a></dd>
             {% endif %}
-                <dd><a href="/myblogs" style="font-size: 18px;">我的日志</a></dd>
-                <dd><a href="/mycomments" style="font-size: 18px;">我的评论</a></dd>
-                <dd><a href="/updatepasswd" style="font-size: 18px;">修改密码</a></dd>
+                <dd><a href="/myblogs" style="font-size: 18px;">我的提问</a></dd>
+                <dd><a href="/mycomments" style="font-size: 18px;">我的回答</a></dd>
                 <dd><a href="/user/{{ user.id }}" style="font-size: 18px;">个人首页</a></dd>
                 <dd><a href="/signout" style="font-size: 18px;">退出登录</a></dd>
         </dl>

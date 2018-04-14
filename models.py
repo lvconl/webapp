@@ -68,29 +68,25 @@ class Topic(db.Model):
             self.id,self.user_id,self.name,self.summary,self.content,self.favorite_count,self.answer_count,self.created_at
         )
 
-class Anwser(db.Model):
+class Answer(db.Model):
     id = db.Column(db.String(255),primary_key = True)
     user_id = db.Column(db.String(255))
-    user_image = db.Column(db.BLOB())
     topic_id = db.Column(db.String(255))
-    name = db.Column(db.String(255))
     summary = db.Column(db.Text())
     content = db.Column(db.Text())
     tag = db.Column(db.String(100))
     created_at = db.Column(db.DateTime())
 
-    def __init__(self,id,user_id,name,user_image,topic_id,content):
+    def __init__(self,id,user_id,topic_id,content):
         self.id = id
         self.user_id = user_id
-        self.name = name
-        self.user_image = user_image
         self.topic_id = topic_id
         self.content = content
         self.created_at = datetime.datetime.now()
 
     def __repr__(self):
-        return "[Anwser] id:`{}`,user_id:`{}`,name:`{}`,user_image:`{}`,content:`{}`,created_at:`{}`".format(
-            self.id,self.user_id,self.name,self.user_image,self.content,self.created_at
+        return "[Anwser] id:`{}`,user_id:`{}`,content:`{}`,created_at:`{}`".format(
+            self.id,self.user_id,self.content,self.created_at
         )
 
 class Comments(db.Model):
@@ -114,6 +110,23 @@ class Comments(db.Model):
             self.id,self.blog_id,self.blog_name,self.user_id,self.user_name,self.user_image,self.content,self.likeCount,self.created_at
         )
 
+class AnswerLikes(db.Model):
+    id = db.Column(db.String(255),primary_key = True)
+    answer_id = db.Column(db.String(255))
+    user_id = db.Column(db.String(255))
+    created_at = db.Column(db.DateTime())
+
+    def __init__(self,id,answer_id,user_id):
+        self.id = id
+        self.answer_id = answer_id
+        self.user_id = user_id
+        self.created_at = datetime.datetime.now()
+
+    def __repr__(self):
+        return "[AnswerLikes] id:`{}`,answer_id:`{}`,user_id:`{}`,created_at:`{}`".format(
+            self.id,self.answer_id,self.user_id,self.created_at
+        )
+
 class Likes(db.Model):
     id = db.Column(db.String(255),primary_key = True)
     comment_id = db.Column(db.String(255))
@@ -131,11 +144,28 @@ class Likes(db.Model):
             self.id,self.comment_id,self.user_id,self.created_at
         )
 
+class Friends(db.Model):
+    id = db.Column(db.String(255),primary_key = True)
+    user_id = db.Column(db.String(255))
+    friend_id = db.Column(db.String(255))
+    created_at = db.Column(db.DateTime())
+
+    def __init__(self,id,user_id,friend_id):
+        self.id = id
+        self.user_id = user_id
+        self.friend_id = friend_id
+        self.created_at = datetime.datetime.now()
+
+    def __repr__(self):
+        return "[Friends] id:`{}`,user_id:`{}`,friend_id:`{}`,created_at:`{}`".format(
+            self.id,self.user_id,self.friend_id,self.created_at
+        )
+
 class Favorite(db.Model):
     id = db.Column(db.String(255),primary_key = True)
     topic_id = db.Column(db.String(255))
     user_id = db.Column(db.String(255))
-    created_at = db.Column(db.String(255))
+    created_at = db.Column(db.DateTime())
 
     def __init__(self,id,topic_id,user_id):
         self.id = id
