@@ -1,23 +1,6 @@
 {% extends 'base.html' %}
 {% block title %}{{ topic.name }}{% endblock %}
 {% block beforehead %}
-    <script type="text/javascript" src="../../topic/templates/js/jquery.js"></script>
-    <script>
-    $(document).ready(function(){
-        $("#btn-follow").click(function(){
-            var id = $(this).attr("id");
-            $.ajax({
-                url:"/person/follow",
-                data:{
-                    "id":id
-                },
-                success:function(data){
-                    alert(data);
-                }
-            });
-        });
-    });
-    </script>
 {% endblock %}
 {% block content %}
     <div class=" layui-fluid layui-container">
@@ -30,19 +13,17 @@
                     {{ topic.content|safe }}
             </div>
         </div>
-    <div class="layui-col-sm3 layui-main" style="">
-            <div class="grid-demo">
-                {% if writer.user_image %}
-                    <img class="layui-main" src="data:;base64,{{ base64.b64encode(writer.user_image).decode('utf-8') }}" width="70" height="70" style="border-radius: 50%;">
+    <div class="layui-col-sm3">
+            <div class="grid-demo" style="margin-left: 20px;">
+                {% if writer.image %}
+                    <a href="/person/{{ writer.id }}"><img src="data:;base64,{{ base64.b64encode(writer.image).decode('utf-8') }}" width="70" height="70" style="border-radius: 50%;"></a>
                 {% else %}
                     <i class="layui-icon" style="font-size: 80px;">&#xe612;</i>
                 {% endif %}
                 <h2 class="layui-container">{{ writer.name }}</h2>
-                <h3>
-                <span>发布：{{ writer.topic_count }}</span>
-                <span>回答：{{ writer.answer_count }}</span>
-                </h3>
-            <button class="layui-btn" id="btn-follow" type="button" value="{{ writer.id }}">关注</button>
+            {% if user %}
+            <a href="/person/follow/{{ writer.id }}" class="layui-btn" style="margin-left: 10px;">关注</a>
+            {% endif %}
             </div>
         </div>
     </div>
@@ -53,7 +34,7 @@
         <div class="site-text">
         <blockquote class="layui-elem-quote layui-quote-nm">
              {% if anwsers.user_image %}
-                 <img src="data:;base64,{{ base64.b64encode(ans.user_image).decode('utf-8') }}" width="32" height="32" style="border-radius: 50%;">
+                 <a href="/person/{{ anwsers.user_id }}"><img src="data:;base64,{{ base64.b64encode(anwsers.user_image).decode('utf-8') }}" width="32" height="32" style="border-radius: 50%;"></a>
              {% else %}
                   <i class="layui-icon" style="font-size: 50px;">&#xe612;</i>
              {% endif %}
@@ -62,7 +43,7 @@
             <p><span>发表于:{{ anwsers.created_at }}</span>
             </blockquote>
         </div>
-            <div class="layui-btn-group layui-container layui-main">
+            <div class="layui-btn-group ">
         {% if pagination_ans.has_prev %}
              <button class="layui-btn layui-btn-primary">
                     <a href="{{ url_for('.topic_detail',id = topic.id,page_ans = pagination_ans.page - 1) }}"><< 上一回答</a>

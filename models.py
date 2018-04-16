@@ -25,6 +25,9 @@ class Users(db.Model):
     topic_count = db.Column(db.Integer())
     answer_count = db.Column(db.Integer())
     favorite_count = db.Column(db.Integer())
+    signature = db.Column(db.Text())
+    profession = db.Column(db.String(100))
+    education = db.Column(db.String(100))
     created_at = db.Column(db.DateTime())
 
     def __init__(self,id,email,passwd,name):
@@ -39,8 +42,8 @@ class Users(db.Model):
         self.created_at = datetime.datetime.now()
 
     def __repr__(self):
-        return "[User] id:`{}`,admin:`{}`,email:`{}`,passwd:`{}`,name:`{}`,birth:`{}`,image:`{}`,topic_count:`{}`,answer_count:`{}`,favorite_count:`{}`,created_at:`{}`".format(
-            self.id,self.admin,self.email,self.passwd,self.name,self.birth,self.image,self.topic_count,self.answer_count,self.favorite_count,self.created_at
+        return "[User] id:`{}`,admin:`{}`,email:`{}`,passwd:`{}`,name:`{}`,signature:`{}`,profession:`{}`,education:`{}`,birth:`{}`,image:`{}`,topic_count:`{}`,answer_count:`{}`,favorite_count:`{}`,created_at:`{}`".format(
+            self.id,self.admin,self.email,self.passwd,self.name,self.signature,self.profession,self.education,self.birth,self.image,self.topic_count,self.answer_count,self.favorite_count,self.created_at
         )
 
 class Topic(db.Model):
@@ -85,7 +88,7 @@ class Answer(db.Model):
         self.created_at = datetime.datetime.now()
 
     def __repr__(self):
-        return "[Anwser] id:`{}`,user_id:`{}`,content:`{}`,created_at:`{}`".format(
+        return "[Answer] id:`{}`,user_id:`{}`,content:`{}`,created_at:`{}`".format(
             self.id,self.user_id,self.content,self.created_at
         )
 

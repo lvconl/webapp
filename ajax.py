@@ -33,7 +33,7 @@ def checkUser():
 def blog_delete():
     id = request.args.get("id")
     comments = Comments.query.filter_by(blog_id = id).all()
-    blog = Blogs.query.filter_by(id = id).all()[0]
+    blog = Topic.query.filter_by(id = id).all()[0]
     for comment in comments:
         db.session.delete(comment)
     db.session.delete(blog)

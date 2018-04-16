@@ -33,11 +33,10 @@
 </head>
 {% block beforehead %} {% endblock %}
 <body>
-<div class="layui-layout">
+<div class="layui-layout ">
     <div class="layui-header">
         <div class="layui-logo"></div>
-<div class="layui-nav">
-<ul class="layui-nav">
+<ul class="layui-nav layui-bg-green">
     <li class="layui-nav-item nav-base" style="margin-left: 20%;">
         <a href="/" style="font-size: 15px;"><i class="layui-icon" style="font-size: 20px;">&#xe68e;&nbsp;&nbsp;</i>首页</a>
     </li>
@@ -61,7 +60,7 @@
             {% endif %}
                 <dd><a href="/myblogs" style="font-size: 18px;">我的提问</a></dd>
                 <dd><a href="/mycomments" style="font-size: 18px;">我的回答</a></dd>
-                <dd><a href="/user/{{ user.id }}" style="font-size: 18px;">个人首页</a></dd>
+                <dd><a href="/person/{{ user.id }}" style="font-size: 18px;">个人首页</a></dd>
                 <dd><a href="/signout" style="font-size: 18px;">退出登录</a></dd>
         </dl>
     </li>
@@ -75,7 +74,7 @@
 </div>
  {% block content %}
  {% endblock %}
-<div class="layui-footer footer " style="margin-top: 120px;background-color: #F0F0F0">
+<div class="layui-footer footer" style="margin-top: 230px">
     <hr>
         <div class="layui-main">
           <p>&copy; 2018 <a href="mailto:835132735@qq.com">lvconl</a> MIT license</p>
@@ -88,6 +87,5 @@
             <p>个人博客 如有侵权请联系</p>
         </div>
     </div>
-</div>
 </body>
 </html>

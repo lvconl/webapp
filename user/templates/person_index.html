@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+{% block title %}{{ person.name }}的主页{% endblock %}
+{% block beforehead %}
+{% endblock %}
+{% block content %}
+    <div class="layui-container" style="background-color: white;">
+    <div class="layui-row">
+        <div class="layui-col-md3">
+            {% if user.image %}
+                <img src="data:;base64,{{ base64.b64encode(user.image).decode('utf-8') }}" width="120" height="120" style="margin-top: 40px;border-radius: 50%;">
+            {% else %}
+            <img src="http://t.cn/RCzsdCq" style="margin-top: 40px;border-radius: 50%;" width="120" height="120">
+            {% endif %}
+        <p>
+        {% if user.id == person.id %}
+            <form class="layui-form" action="/person/image_update" method="post" enctype="multipart/form-data">
+                <div class="layui-form-item">
+                    <div class="layui-input-inline">
+                        <input type="file" name="image" required lay-verify="required" placeholder="请输入用户名" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+            <button class="layui-btn" lay-submit lay-filter="formDemo" style="margin-top: 10px;margin-left: 28px;">
+                <i class="layui-icon">&#xe67c;</i>上传头像
+            </button>
+            </form>
+        {% endif %}
+        <div class="layui-container">
+            <p>
+                <span class="layui-container" style="font-size: 30px;">{{ user.name }}</span>
+                <h2 style="margin-left: 14px;"><span>发布：{{ person.topic_count }}</span>
+                <span>回答：{{ person.answer_count }}</span>
+                </h2>
+        </div>
+        </div>
+        <div class="layui-col-md9">
+            <div class="layui-tab">
+                <ul class="layui-tab-title">
+                    <li class="layui-this">个人信息</li>
+                    <li>最近提问</li>
+                    <li>最近回答</li>
+                </ul>
+                <div class="layui-tab-content">
+                    {% if user.id == person.id %}
+                    <div class="layui-tab-item layui-show">
+                        <form class="layui-form" action="/person/info_update" method="post">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">用户名:</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="username" value="{{ person.name }}" required lay-verify="required" placeholder="请输入用户名" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">签名:</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="signature" value="{{ person.signature }}" required lay-verify="required" placeholder="请输入签名" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">教育经历</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="education" value="{{ person.education }}" required lay-verify="required" placeholder="请输入职业" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">行业</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="career" value="{{ person.profession }}" required lay-verify="required" placeholder="请输入职业" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">生日</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" class="layui-input" placeholder="请选择日期" id="test1" value="{{ user.birth }}">
+                                   <script src="laydate.js"></script> <!-- 改成你的路径 -->
+                                    <script>
+                                        lay('#version').html('-v'+ laydate.v);
+                                        //执行一个laydate实例
+                                        laydate.render({
+                                        elem: '#test1' //指定元素
+                                        });
+                                    </script>
+                                </div>
+                        </div>
+                            <div class="layui-form-item">
+                                <div class="layui-input-block">
+                                    <button class="layui-btn" lay-submit lay-filter="formDemo">修改</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    {% endif %}
+                    <div class="layui-tab-item">
+                        {% for topic in topics %}
+                            <blockquote class="site-text layui-elem-quote">
+                                <h1 class="layui-timeline-title"><a href="/topic/{{ topic.id }}">{{ topic.name }}</a></h1>
+                                <p style="font-size: 17px;">
+                                <a href="/topic/{{ topic.id }}">{{ topic.summary }}</a>
+                                </p>
+                                <p>
+                                {{ topic.created_at }}
+                                </p>
+                                <p>
+                                    <a href="/topic/edit/{{ topic.id }}">编辑</a>●<a href="/topic/delete/{{ topic.id }}">删除</a>
+                                </p>
+                            </blockquote>
+                        {% endfor %}
+                    </div>
+                    <div class="layui-tab-item">
+                        {% for answer in answers %}
+                            <blockquote class="site-text layui-elem-quote">
+                                <h1 class="layui-timeline-title"><a href="/topic/{{ answer.topic_id }}">{{ answer.content|safe }}</a></h1>
+                                <a href="/topic/{{ answer.topic_id }}">{{ answer.topic_name }}</a>
+                                <p>
+                                    {{ answer.created_at }}●<a href="/answer/delete/{{ answer.id }}">删除</a>
+                            </blockquote>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

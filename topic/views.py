@@ -43,7 +43,8 @@ def topic_create():
     if request.method == 'GET':
         return render_template(
             'topicCreate.html',
-            user = user
+            user = user,
+            base64 = base64
         )
     if request.method == 'POST':
         title = request.form.get('title')
@@ -68,12 +69,9 @@ def topic_detail(id):
         topic = ''
     else:
         topic = topics[0]
-    print(topic)
     if request.method == 'GET':
         page = request.args.get('page_ans', 1, type=int)
-        print(page)
         pagination_ans = Answer.query.filter_by(topic_id=topic.id).paginate(page, per_page=1, error_out=False)
-        print(pagination_ans.items)
         writer = Users.query.filter_by(id=topic.user_id).all()[0]
         if len(pagination_ans.items) == 0:
             return render_template(
@@ -117,3 +115,18 @@ def topic_detail(id):
         db.session.add(ans)
         db.session.commit()
         return redirect('/topic/' + topic.id)
+
+@topic.route('/topic/delete/<id>')
+def topic_delete(id):
+    user = checkUser()
+    if user == '':
+        return redirect('/')
+    t = Topic.query.filter_by(id = id).all()[0]
+    answer = Answer.query.filter_by(topic_id = id).all()
+    print(answer)
+    if len(answer):
+        for a in answer:
+            db.session.delete(a)
+    db.session.delete(t)
+    db.session.commit()
+    return redirect('/person/'+user.id)

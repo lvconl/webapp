@@ -7,7 +7,7 @@
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link rel="stylesheet" href="../../static/css/layui.css">
+    <link rel="stylesheet" href="../static/css/layui.css">
     <style type="text/css">
         .layui-nav .nav-base{
             width: 8%;
@@ -21,7 +21,7 @@
         .layui-main a{
         }
     </style>
-    <script src="../../static/layui.js" charset="utf-8"></script>
+    <script src="../static/layui.js" charset="utf-8"></script>
     <script>
         layui.use('element', function(){
             var element = layui.element;
@@ -32,12 +32,10 @@
     </script>
 </head>
 {% block beforehead %} {% endblock %}
-<body>
+<body style="background-color: #F0F0F0;">
 <div class="layui-layout">
-    <div class="layui-header">
-        <div class="layui-logo"></div>
 <div class="layui-nav">
-<ul class="layui-nav">
+<ul class="layui-nav layui-bg-green">
     <li class="layui-nav-item nav-base" style="margin-left: 20%;">
         <a href="/" style="font-size: 15px;"><i class="layui-icon" style="font-size: 20px;">&#xe68e;&nbsp;&nbsp;</i>首页</a>
     </li>
@@ -57,8 +55,7 @@
             {% endif %}{{ user.name }}</a>
         <dl class="layui-nav-child">
             {% if user.admin == 1 %}
-                <dd><a href="/blogs" style="font-size: 18px;">日志管理</a></dd>
-                <dd><a href="/users" style="font-size: 18px;">用户管理</a></dd>
+                <dd><a href="/admin" style="font-size: 18px;">后台管理</a></dd>
             {% endif %}
                 <dd><a href="/myblogs" style="font-size: 18px;">我的提问</a></dd>
                 <dd><a href="/mycomments" style="font-size: 18px;">我的回答</a></dd>
@@ -73,10 +70,58 @@
     {% endif %}
 </ul>
 </div>
-</div>
  {% block content %}
+
+     <div class="layui-container" style="background-color: white;">
+    <div class="layui-row">
+        <div class="layui-col-md3">
+            <img src="http://t.cn/RCzsdCq" style="margin-top: 40px;" width="80" height="80">
+            {{ user.name }}
+        </div>
+        <div class="layui-col-md9">
+            <div class="layui-tab">
+                <ul class="layui-tab-title">
+                    <li class="layui-this">个人信息</li>
+                    <li>最近提问</li>
+                    <li>最近回答</li>
+                </ul>
+                <div class="layui-tab-content">
+                    <div class="layui-tab-item layui-show">
+                        <form class="layui-form" action="">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">用户名:</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="password" required lay-verify="required" placeholder="请输入密码" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">签名:</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="password" required lay-verify="required" placeholder="请输入密码" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">行业</label>
+                                <div class="layui-input-inline">
+                                    <input type="career" name="password" required lay-verify="required" placeholder="请输入密码" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <div class="layui-input-block">
+                                    <button class="layui-btn" lay-submit lay-filter="formDemo">修改</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="layui-tab-item">内容2</div>
+                    <div class="layui-tab-item">内容3</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
  {% endblock %}
-<div class="layui-footer footer layui-container" style="margin-top: 120px;">
+<div class="layui-footer footer " style="margin-top: 120px;background-color: #F0F0F0">
     <hr>
         <div class="layui-main">
           <p>&copy; 2018 <a href="mailto:835132735@qq.com">lvconl</a> MIT license</p>
