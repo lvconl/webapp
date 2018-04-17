@@ -4,17 +4,19 @@
 {% endblock %}
 {% block content %}
     <div class=" layui-fluid layui-container">
-    <fieldset class="layui-elem-field layui-field-title layui-main" style="margin-top: 20px;">
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
         <legend>{{ topic.name }}</legend>
     </fieldset>
     <div class="layui-row">
         <div class="layui-col-sm9" style="background-color: #F2F2F2;">
-            <div class="site-content">
-                    {{ topic.content|safe }}
+            <div class="site-content" style="background-color: white;border-radius: 5px;">
+                    <div style="padding: 7px;font-size: 17px;">
+                        {{ topic.content|safe }}
+                    </div>
             </div>
         </div>
     <div class="layui-col-sm3">
-            <div class="grid-demo" style="margin-left: 20px;">
+            <div class="grid-demo" style="margin-left: 20px; background-color: white;border-radius: 4px;">
                 {% if writer.image %}
                     <a href="/person/{{ writer.id }}"><img src="data:;base64,{{ base64.b64encode(writer.image).decode('utf-8') }}" width="70" height="70" style="border-radius: 50%;"></a>
                 {% else %}
@@ -32,7 +34,7 @@
             <legend><a name="nonmodules">最近答案</a></legend>
         </fieldset>
         <div class="site-text">
-        <blockquote class="layui-elem-quote layui-quote-nm">
+        <blockquote class="layui-elem-quote layui-quote-nm" style="background-color: white;border-radius: 5px;">
              {% if anwsers.user_image %}
                  <a href="/person/{{ anwsers.user_id }}"><img src="data:;base64,{{ base64.b64encode(anwsers.user_image).decode('utf-8') }}" width="32" height="32" style="border-radius: 50%;"></a>
              {% else %}
@@ -55,7 +57,7 @@
             </button>
         {% endif %}
             </div>
-     <div class="layui-collapse" style="margin-top: 10px;">
+     <div class="layui-collapse" style="margin-top: 10px;background-color: white;border-radius: 5px;">
         <div class="layui-colla-item">
             {% if comment %}
             <h2 class="layui-colla-title">该回答的评论</h2>

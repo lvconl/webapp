@@ -1,6 +1,17 @@
 {% extends 'base.html' %}
 {% block title %}首页{% endblock %}
 {% block beforehead %}
+    <style>
+    cite:hover{
+        background-color: #55b83a;
+        color: white;
+    }
+    cite{
+        background-color: #f3f3f3;
+        border-radius: 7px;
+        padding: 3px;
+    }
+    </style>
 {% endblock %}
 {% block content %}
     <div class="layui-fluid layui-container">
@@ -11,7 +22,7 @@
         <div class="layui-col-sm9">
             <div class="grid-demo grid-demo-bg1">
                 {% for topic in topics %}
-                    <blockquote class="site-text layui-elem-quote">
+                    <blockquote class="site-text layui-elem-quote" style="background-color: white;border-radius: 4px;">
                         <h1 class="layui-timeline-title"><a href="/topic/{{ topic.id }}">{{ topic.name }}</a></h1>
                     <p style="font-size: 17px;">
                         <a href="/topic/{{ topic.id }}">{{ topic.summary }}</a>
@@ -36,9 +47,50 @@
             </div>
         </div>
         <div class="layui-col-sm3">
+            <div class="site-inline">
+            <div class="site-tree">
+                <ul class="layui-tree" style="background-color: white; border-radius: 4px;margin-left: 5px;padding: 5px;">
+                    <li style=""><h2>热门标签</h2></li>
+                    <li class="site-tree-noicon layui-this">
+                        <a href="/doc/">
+                        <cite style="font-size: 19px;">node.js</cite>
+                        <em>Getting Started</em>
+                        </a>
+                    </li>
+                    <li class="site-tree-noicon layui-this">
+                        <a href="/doc/">
+                        <cite style="font-size: 19px;">java</cite>
+                        <em>Getting Started</em>
+                        </a>
+                    </li>
+                    <li class="site-tree-noicon layui-this">
+                        <a href="/doc/">
+                        <cite style="font-size: 19px;">前端</cite>
+                        <em>Getting Started</em>
+                        </a>
+                    </li>
+                    <li class="site-tree-noicon layui-this">
+                        <a href="/doc/">
+                        <cite style="font-size: 19px;">python</cite>
+                        <em>Getting Started</em>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            </div>
+            <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+                <legend>为你推荐</legend>
+            </fieldset>
             <div class="grid-demo">
-                <ul>
-                    <iframe src="//www.seniverse.com/weather/weather.aspx?uid=UF094BD236&cid=CHSD000100&l=zh-CHS&p=SMART&a=0&u=C&s=3&m=2&x=1&d=2&fc=&bgc=&bc=&ti=0&in=0&li=" frameborder="0" scrolling="no" width="300" height="110" allowTransparency="true"></iframe>
+                <ul style="margin-left: 30px;">
+                    <li>
+                        <img src="../static/image/zw.jpeg" width="200" height="200">
+                    </li>
+                    <li>
+                        <h2>**软件公司</h2>
+                        <h3>python后端开发</h3>
+                        <h3>月薪:****</h3>
+                    </li>
                 </ul>
             </div>
         </div>
