@@ -86,10 +86,12 @@ def topic_detail(id):
             comments = Comments.query.filter_by(answer_id=answer.id).all()
             comment = []
             for c in comments:
-                user = Users.query.filter_by(id=c.user_id).all()[0]
-                c.user_name = user.name
+                c_user = Users.query.filter_by(id=c.user_id).all()[0]
+                c.user_name = c_user.name
                 comment.append(c)
-            like = Likes.query.filter(and_(Likes.user_id.like(user.id), Likes.comment_id.like(answer.id))).all()
+            like = []
+            if len(user):
+                like = Likes.query.filter(and_(Likes.user_id.like(user.id), Likes.comment_id.like(answer.id))).all()
             if len(like):
                 answer.canLike = True
             else:

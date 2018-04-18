@@ -66,7 +66,7 @@ def login():
             user = users[0]
             if user.passwd == md5(password):
                 response = make_response('''<script>location.href='/';</script>''')
-                if  remember is 'on':
+                if  len(remember):
                     outdate = datetime.datetime.today() + datetime.timedelta(days=30)
                     response.set_cookie(COOKIE_NAME,user.id,expires = outdate)
                     return response

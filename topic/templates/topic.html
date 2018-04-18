@@ -70,6 +70,7 @@
                 {% else %}
                 <h2 class="layui-colla-title">该回答还没有评论</h2>
                 {% endif %}
+        {% if user %}
         <div class="layui-colla-content layui-show">
             <form class="layui-form" action="/comment/create" method="POST">
              <input type="text" name="comment"  placeholder="快来评论两句..." class="layui-input" autocomplete="off">
@@ -78,6 +79,7 @@
              <button class="layui-btn" lay-submit lay-filter="formDemo" style="margin-top: 5px;">评论</button>
             </form>
         </div>
+            {% endif %}
         </div>
     </div>
     {% else %}
@@ -85,6 +87,7 @@
             <legend><a name="nonmodules">暂无回答</a></legend>
         </fieldset>
     {% endif %}
+    {% if user %}
     <form class="layui-form layui-form-pane" style="margin-top: 15px;" action="/topic/{{ topic.id }}" method="POST">
         <div class="layui-form-item layui-form-text">
             <script src="http://cdn.bootcss.com/wangeditor/2.1.20/js/lib/jquery-2.2.1.js"></script>
@@ -117,4 +120,5 @@
     </div>
 <script src="http://cdn.bootcss.com/wangeditor/2.1.20/js/wangEditor.js"></script>
        <link href="http://cdn.bootcss.com/wangeditor/2.1.20/css/wangEditor.css" rel="stylesheet">
+    {% endif %}
 {% endblock %}
